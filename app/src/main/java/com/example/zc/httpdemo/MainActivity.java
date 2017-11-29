@@ -132,14 +132,14 @@ public class MainActivity extends AppCompatActivity {
     private void useHttpUrlConnectionPost(String url){
         InputStream inputStream = null;
         try {
-            HttpURLConnection httpUrlConnecton = UrlConnectionManager.getHttpUrlConnection(url);
+            HttpURLConnection httpUrlConnection = UrlConnectionManager.getHttpUrlConnection(url);
             List<NameValuePair> postParams = new ArrayList<>();
             postParams.add(new BasicNameValuePair("ip","59.108.54.37"));
-            UrlConnectionManager.postParams(httpUrlConnecton.getOutputStream(),postParams);
-            httpUrlConnecton.connect();
-            inputStream = httpUrlConnecton.getInputStream();
+            UrlConnectionManager.postParams(httpUrlConnection.getOutputStream(),postParams);
+            httpUrlConnection.connect();
+            inputStream = httpUrlConnection.getInputStream();
 
-            int code = httpUrlConnecton.getResponseCode();
+            int code = httpUrlConnection.getResponseCode();
             String response = converStreamToString(inputStream);
 
             Log.d("MainActivity", "请求状态码:" + code + "\n请求结果:\n" + response);
