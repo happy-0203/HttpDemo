@@ -24,6 +24,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -39,7 +40,9 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void run() {
                 //useHttpClientGet("http://www.baidu.com");
-                useHttpClientPost("http://ip.taobao.com/instructions.php");
+                //useHttpClientPost("http://ip.taobao.com/instructions.php");
+
+                useHttpUrlConnectionPost("http://ip.taobao.com/instructions.php");
             }
         }).start();
 
@@ -122,8 +125,36 @@ public class MainActivity extends AppCompatActivity {
             e.printStackTrace();
         }
 
+    }
+
+    //是用HttpUrlConnection
+
+    private void useHttpUrlConnectionPost(String url){
+        InputStream inputStream = null;
+        try {
+            HttpURLConnection httpUrlConnecton = UrlConnectionManager.getHttpUrlConnection(url);
+            List<NameValuePair> postParams = new ArrayList<>();
+            postParams.add(new BasicNameValuePair("ip","59.108.54.37"));
+            UrlConnectionManager.postParams(httpUrlConnecton.getOutputStream(),postParams);
+            httpUrlConnecton.connect();
+            inputStream = httpUrlConnecton.getInputStream();
+
+            int code = httpUrlConnecton.getResponseCode();
+            String response = converStreamToString(inputStream);
+
+            Log.d("MainActivity", "请求状态码:" + code + "\n请求结果:\n" + response);
+            inputStream.close();
+
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
 
     }
+
+
+
 
     private String converStreamToString(InputStream inputStream) throws IOException {
 
